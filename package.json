@@ -1,0 +1,22 @@
+{
+  "name": "unipredictor-backend",
+  "version": "1.0.0",
+  "description": "a backend for unipredictor",
+  "main": "server.js",
+  "scripts": {
+    "test": "nodemon server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/unstoppable-tanmay/Uni-Predictor-Backend.git"
+  },
+  "keywords": [
+    "unipredictor"
+  ],
+  "author": "Tanmay",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/unstoppable-tanmay/Uni-Predictor-Backend/issues"
+  },
+  "homepage": "https://github.com/unstoppable-tanmay/Uni-Predictor-Backend#readme"
+}
