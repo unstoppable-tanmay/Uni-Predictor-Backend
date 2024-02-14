@@ -1,0 +1,1 @@
+npm i express multer csv-parser mongoose bcrypt @tensorflow/tfjs-node body-parser
