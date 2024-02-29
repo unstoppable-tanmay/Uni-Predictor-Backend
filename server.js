@@ -194,7 +194,6 @@ async function trainModel(user, parsedData) {
         // Train the model
         await model.fit(xsNormalized, ysNormalized, {
             epochs: 100,
-            shuffle: true,
             validationSplit: 0.2,
         });
 
@@ -266,13 +265,13 @@ app.get('/predict/:weekNumber', authenticateUser, async (req, res) => {
         const [invest, profitLoss, customer, availabilityShortage, companyValuation, predictedWorkCapacity] = inverseNormalizedValues;
 
         return res.status(200).json({
-            weekNumber: weekNumber,
-            invest: invest,
+            // weekNumber: weekNumber,
+            // invest: invest, 
             profitLoss: profitLoss,
-            customer: customer,
-            availabilityShortage: availabilityShortage,
-            companyValuation: companyValuation,
-            predictedWorkCapacity: predictedWorkCapacity
+            // customer: customer,
+            // availabilityShortage: availabilityShortage,
+            // companyValuation: companyValuation,
+            // predictedWorkCapacity: predictedWorkCapacity
         });
     } catch (error) {
         console.error(error);
