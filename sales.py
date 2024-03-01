@@ -40,6 +40,9 @@ look_back = 1
 trainX, trainY = create_dataset(train, look_back)
 testX, testY = create_dataset(test, look_back)
 
+print(trainX,trainY)
+
+
 # reshape input to be [samples, time steps, features]
 trainX = np.reshape(trainX, (trainX.shape[0], 1, trainX.shape[1]))
 testX = np.reshape(testX, (testX.shape[0], 1, testX.shape[1]))
@@ -73,16 +76,14 @@ testScore = np.sqrt(mean_squared_error(testY[0], testPredict[:,0]))
 print('Test Score: %.2f RMSE' % (testScore))
 
 
-
-
 def custom_accuracy(y_true, y_pred):
     # calculate percentage difference between predicted and original data
-    percentage_diff = np.abs((y_true - y_pred) / y_true) * 100
+	percentage_diff = np.abs((y_true - y_pred) / y_true) * 100
     
     # calculate accuracy as the inverse proportion of samples with percentage difference <= 10%
-    accuracy = np.sum(percentage_diff <= 10) / len(y_true)
+	accuracy = np.sum(percentage_diff <= 10) / len(y_true)
     
-    return accuracy
+	return accuracy
 
 # calculate custom accuracy
 train_accuracy = custom_accuracy(trainY[0], trainPredict[:,0])
@@ -90,8 +91,6 @@ test_accuracy = custom_accuracy(testY[0], testPredict[:,0])
 
 print('Train Accuracy: %.2f' % (train_accuracy))
 print('Test Accuracy: %.2f' % (test_accuracy))
-
-
 
 
 # shift train predictions for plotting
@@ -108,3 +107,24 @@ plt.plot(trainPredictPlot, label='Train Predictions')
 plt.plot(testPredictPlot, label='Test Predictions')
 plt.legend()
 plt.show()
+
+
+# Function to predict with the loaded scaler
+def predict_with_scaler(scaler, input_data):
+    # Normalize input data with the loaded scaler
+    normalized_data = scaler.transform(input_data)
+
+    # Reshape normalized data
+    normalized_data = np.reshape(normalized_data, (normalized_data.shape[0], 1, normalized_data.shape[1]))
+
+    # Make predictions with the original model
+    predictions = model.predict(normalized_data)
+
+    # Invert predictions with the loaded scaler
+    inverted_predictions = scaler.inverse_transform(predictions)
+
+    return inverted_predictions
+
+new_data = np.array([[231]])  # Replace with your own data
+predicted_values = predict_with_scaler(scaler, new_data)
+print("Predicted Values:", predicted_values)
