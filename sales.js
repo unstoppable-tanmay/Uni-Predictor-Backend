@@ -28,10 +28,10 @@ class CustomScaler {
 }
 
 // Load and preprocess the dataset using csv-parser
-async function loadDataset() {
+async function loadDataset(csvPath) {
     const rows = [];
     return new Promise((resolve, reject) => {
-        fs.createReadStream('airline-passengers.csv')
+        fs.createReadStream(csvPath)
             .pipe(csv())
             .on('data', (row) => rows.push(row))
             .on('end', () => {
@@ -200,8 +200,8 @@ function loadScaler(scalerPath) {
 }
 
 // Main execution
-async function main() {
-    const { dataset, scaler } = await loadDataset();
+async function main(csvPath, modelPath) {
+    const { dataset, scaler } = await loadDataset(csvPath);
 
     const lookBack = 1;
     const [trainX, trainY, testX, testY] = createDatasets(dataset.arraySync(), lookBack);
@@ -210,31 +210,29 @@ async function main() {
     await trainModel(model, trainX, trainY);
 
     // Save the trained model
-    const modelPath = "models/model"
     await saveModel(model, modelPath);
 
     // Save scaler
-    const scalerPath = 'models/model/scaler.json';
+    const scalerPath = modelPath + '/scaler.json';
     saveScaler(scaler, scalerPath);
 
     evaluateModel(model, testX, testY, scaler, lookBack, dataset, trainX, trainY);
 }
 
 // 
-async function predictMain() {
-    const modelPath = "./models/model/model.json"
-    const scalerPath = "./models/model/scaler.json"
+async function predictMain(modelPath, input) {
+    const scalerPath = modelPath + "/scaler.json"
 
     // Load the saved model
-    const loadedModel = await loadModel(modelPath);
+    const loadedModel = await loadModel(modelPath+'/model.json');
     const loadedScaler = loadScaler(scalerPath);
 
     // Example input data for prediction
-    const inputData = [355];
+    const inputData = [input];
 
     // Make predictions using the loaded model
     predict(loadedModel, inputData, loadedScaler);
 }
 
-main();
-// predictMain()
+// main('airline-passengers.csv',"models/model");
+predictMain("models/model",123)
